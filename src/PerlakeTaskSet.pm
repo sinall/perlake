@@ -30,7 +30,9 @@ sub desc_test {
 }
 
 sub test {
-	print "Testing...";
+	my $this = shift;
+	my @args = @_;
+	print "Testing @args";
 }
 
 1;

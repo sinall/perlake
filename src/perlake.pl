@@ -36,7 +36,7 @@ sub run_task {
 		die "perlake aborted!\nDon't know how to build task '$task'\n";
 	}
 	my $taskMethod = "$task";
-	$perlakeTaskSet->$taskMethod();
+	$perlakeTaskSet->$taskMethod(@ARGV);
 }
 
 sub list_methods {
