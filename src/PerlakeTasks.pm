@@ -11,11 +11,11 @@ sub new {
 }
 
 sub desc_build {
-	print "Running.\n";
+	"Description.\n";
 }
 
 sub build {
-	print "Description.\n";
+	print "Building.\n";
 }
 
 1;

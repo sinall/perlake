@@ -7,26 +7,25 @@ use B qw/svref_2object/;
 use PerlakeTasks;
 
 my $task = shift;
+my $perlakeTasks = new PerlakeTasks;
 if ($task =~ /-T/) {
-	print "Listing all tasks here:\n";
+	my $perlakeTasks = new PerlakeTasks;
 	my @tasks = list_module("PerlakeTasks");
-	print join("\n", @tasks), "\n";
+	@tasks = grep(!/new/, @tasks);
+	@tasks = grep(!/^desc_/, @tasks);
+	for $task (@tasks) {
+		my $descMethod = "desc_$task";
+		my $desc = $perlakeTasks->$descMethod();
+		print __FILE__ . " $task\t # $desc\n";
+	}
 } else {
-	my $func = "task_run_$task";
-	main->$func();
-}
-
-sub in_package {
-    my ($coderef, $package) = @_;
-    my $cv = svref_2object($coderef);
-    return if not $cv->isa('B::CV') or $cv->GV->isa('B::SPECIAL');
-    return $cv->GV->STASH->NAME eq $package;
+	my $taskMethod = "$task";
+	$perlakeTasks->$taskMethod();
 }
 
 sub list_module {
     my $module = shift;
     no strict 'refs';
-
-    return grep { defined &{"$module\::$_"} and in_package(\&{*$_}, $module) } keys %{"$module\::"}
+    return grep { defined &{"$module\::$_"} } keys %{"$module\::"}
 }
 
