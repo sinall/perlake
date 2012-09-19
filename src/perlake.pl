@@ -3,29 +3,43 @@ push (@INC, `pwd`);
 
 use strict;
 use warnings;
-use B qw/svref_2object/;
-use PerlakeTasks;
+use PerlakeTaskSet;
 
+if (scalar(@ARGV) == 0) {
+	die "Usage: " . __FILE__ . " -T|<task>\n";
+}
 my $task = shift;
-my $perlakeTasks = new PerlakeTasks;
+my $perlakeTaskSet = new PerlakeTaskSet;
+my @methods = list_methods("PerlakeTaskSet");
 if ($task =~ /-T/) {
-	my $perlakeTasks = new PerlakeTasks;
-	my @tasks = list_module("PerlakeTasks");
-	@tasks = grep(!/new/, @tasks);
+	help($task)
+} else {
+	&run_task($task, @methods)
+}
+
+sub help {
+	my @tasks = grep(!/new/, @methods);
+	@tasks = grep(!/^_/, @tasks);
 	@tasks = grep(!/^desc_/, @tasks);
 	for $task (@tasks) {
 		my $descMethod = "desc_$task";
-		my $desc = $perlakeTasks->$descMethod();
+		my $desc = $perlakeTaskSet->$descMethod();
 		print __FILE__ . " $task\t # $desc\n";
 	}
-} else {
+}
+
+sub run_task {
+	my @tasks = grep(/^$task/, @methods);
+	my $taskCount = scalar(@tasks);
+	if ($taskCount == 0) {
+		die "perlake aborted!\nDon't know how to build task '$task'\n";
+	}
 	my $taskMethod = "$task";
-	$perlakeTasks->$taskMethod();
+	$perlakeTaskSet->$taskMethod();
 }
 
-sub list_module {
-    my $module = shift;
+sub list_methods {
+    my $package = shift;
     no strict 'refs';
-    return grep { defined &{"$module\::$_"} } keys %{"$module\::"}
+    return grep { defined &{"$package\::$_"} } keys %{"$package\::"}
 }
-
