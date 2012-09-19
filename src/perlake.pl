@@ -1,8 +1,9 @@
-﻿#!/usr/bin/perl
+#!/usr/bin/perl
 push (@INC, `pwd`);
 
 use strict;
 use warnings;
+use utf8;
 use PerlakeTaskSet;
 
 if (scalar(@ARGV) == 0) {

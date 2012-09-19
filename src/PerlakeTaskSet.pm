@@ -1,5 +1,6 @@
-﻿package PerlakeTaskSet;
+package PerlakeTaskSet;
 
+use utf8;
 require Exporter;
 @ISA = qw (Exporter);
 @EXPORT = qw ();
