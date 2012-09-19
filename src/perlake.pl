@@ -15,17 +15,18 @@ my @methods = list_methods("PerlakeTaskSet");
 if ($task =~ /-T/) {
 	help($task)
 } else {
-	&run_task($task, @methods)
+	run_task($task, @methods)
 }
 
 sub help {
 	my @tasks = grep(!/new/, @methods);
 	@tasks = grep(!/^_/, @tasks);
 	@tasks = grep(!/^desc_/, @tasks);
+	my $maxLength = max_length(@tasks);
 	for $task (@tasks) {
 		my $descMethod = "desc_$task";
 		my $desc = $perlakeTaskSet->$descMethod();
-		print __FILE__ . " $task\t # $desc\n";
+		printf("%s %-${maxLength}s\t# %s\n", __FILE__, $task, $desc);
 	}
 }
 
@@ -44,3 +45,19 @@ sub list_methods {
     no strict 'refs';
     return grep { defined &{"$package\::$_"} } keys %{"$package\::"}
 }
+
+sub max_length {
+	my @tasks = @_;
+	
+	my $maxLength = 0;
+	for $task (@tasks) {
+		my $length = length($task);
+		if ($maxLength < $length)
+		{
+			$maxLength = $length;
+		}
+	}
+	
+	$maxLength;
+}
+
