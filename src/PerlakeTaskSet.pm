@@ -4,15 +4,17 @@ require utf8;
 require Exporter;
 
 # Notice, use 'require' to additional package instead of 'use'.
+require File::Basename;
 
 @ISA = qw (Exporter);
 @EXPORT = qw ();
 
 sub new {
-  my $this = {};
-  bless $this;
-  $this->_init();
-  return $this;
+	my $class = shift;
+	my $self = {};
+	bless $self, $class;
+	$self->_init();
+	return $self;
 }
 
 # Specify your own initialize logic here.
