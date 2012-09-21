@@ -22,6 +22,7 @@ sub help {
 	my @tasks = grep(!/new/, @methods);
 	@tasks = grep(!/^_/, @tasks);
 	@tasks = grep(!/^desc_/, @tasks);
+	@tasks = sort @tasks;
 	my $maxLength = max_length(@tasks);
 	for $task (@tasks) {
 		my $descMethod = "desc_$task";
