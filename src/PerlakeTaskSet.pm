@@ -27,7 +27,7 @@ sub desc_build {
 }
 
 sub build {
-	print "Building...";
+	print "Building...\n";
 }
 
 sub desc_test {
@@ -37,7 +37,7 @@ sub desc_test {
 sub test {
 	my $this = shift;
 	my @args = @_;
-	print "Testing @args";
+	print "Testing @args\n";
 }
 
 1;

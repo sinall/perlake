@@ -4,6 +4,7 @@ push (@INC, `pwd`);
 use strict;
 use warnings;
 use utf8;
+use POSIX qw(strftime);
 use PerlakeTaskSet;
 
 if (scalar(@ARGV) == 0) {
@@ -38,7 +39,13 @@ sub run_task {
 		die "perlake aborted!\nDon't know how to build task '$task'\n";
 	}
 	my $taskMethod = "$task";
+	my @beginTime =  localtime;
+	my $beginTimeStr = POSIX::strftime("%Y-%m-%d %H:%M:%S", @beginTime);
+	print "Begin at $beginTimeStr.\n";
 	$perlakeTaskSet->$taskMethod(@ARGV);
+	my @endTime =  localtime;
+	my $endTimeStr = POSIX::strftime("%Y-%m-%d %H:%M:%S", @endTime);
+	print "Begin at $beginTimeStr, End at $endTimeStr.\n";
 }
 
 sub list_methods {
